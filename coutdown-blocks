@@ -1,0 +1,307 @@
+<script src="{{ 'jquery.min.js' | asset_url }}" defer="defer"></script>
+<link href="{{ 'bootstrap.min.css' | asset_url }}" rel="stylesheet" type="text/css">
+<script src="{{ 'bootstrap.min.js' | asset_url }}" defer="defer"></script>
+
+
+
+
+{% style %}
+  .color-red{
+    color:#E1251B !important;
+  }
+  .color-bg-red{
+    color:#fff;
+    background:#E1251B;
+  }
+  .f-family{
+        font-family: var(--font_stack_heading);
+  }
+  .f-size-small{
+        font-size: 1.5rem;
+  }
+  .f-size-regular{
+        font-size: 2rem;
+  }
+  .f-size-large{
+        font-size: 2.5rem;
+  }
+  .f-size-xlarge{
+        font-size: 3rem;
+  }
+  .f-size-xxlarge{
+        font-size: 3.5rem;
+  }
+  /* ================================= */
+  .giveaway-section{
+    background : {{ section.settings.section_bg_color }};
+    padding:5rem 0;
+  }
+giveaway-coutdown .cont {
+  text-align: center;
+}
+giveaway-coutdown h1 {
+  text-transform: capitalize;
+}
+giveaway-coutdown h1 > p {
+  font-size: 60px; 
+}
+giveaway-coutdown .counters {
+
+}
+giveaway-coutdown .counter {
+background: #e2261d;
+    display: inline-block;
+    border: 1px solid #fff;
+    border-radius: 0.5rem;
+      min-width: 70px;
+
+}
+giveaway-coutdown .counter > p {
+  text-transform: uppercase;
+  color: #fff;
+}
+giveaway-coutdown span {
+display: block;
+    font-size: 2rem;
+    padding: .5rem;
+  color: #fff;
+}
+
+{% endstyle %}
+
+
+
+
+<section id='{{ section.id }}' class="giveaway-section">
+  <div class="container">
+     <h4 class='mt-5 color-red text-center f-size-regular'>{{ section.settings.hint }}</h4>
+     <h2 class='my-4 fst-italic text-center text-light f-size-xxlarge'>{{ section.settings.main_title }}</h2>
+     <div class='my-3 text-center text-light f-size-small w-75 m-auto'>{{ section.settings.subtitle }}</div>
+
+    <div class='row m-auto'>
+      {% for block in section.blocks %}
+        <div class='col-12 col-md-6 col-xxl-3 mb-4'>
+          <div class='img-fluid'>
+            <img src='{{ block.settings.giveaway_image | img_url : "master" }}' class='img-fluid w-75 m-auto' alt='giveaway-{{ forloop.index }}'>
+          </div>
+               {% if block.settings.active_countdown %}
+                        <script>
+                          // Set the countdown date
+                        let countDownDate{{block.id}} = new Date("{{ block.settings.count_down_month }} {{ block.settings.count_down_day }}, {{ block.settings.count_down_year }} {{ block.settings.count_down_hour}}:{{ block.settings.count_down_mins }}:00").getTime();
+                        
+                        // Update the count down every 1 second
+                        let x{{block.id}} = setInterval(function() {
+                        
+                          // Get the current time
+                          let now{{block.id}} = new Date().getTime();
+                        
+                          // Find the distance between current time and the count down date
+                          let distance{{block.id}} = countDownDate{{block.id}} - now{{block.id}};
+                        
+                          // Time calculations for days, hours, minutes and seconds
+                          let days{{block.id}} = Math.floor(distance{{block.id}} / (1000 * 60 * 60 * 24));
+                          let hours{{block.id}} = Math.floor((distance{{block.id}} % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                          let minutes{{block.id}} = Math.floor((distance{{block.id}} % (1000 * 60 * 60)) / (1000 * 60));
+                          let seconds{{block.id}} = Math.floor((distance{{block.id}} % (1000 * 60)) / 1000);
+                        
+                          // Display the result in the corresponding elements
+                          document.getElementById("days{{block.id}}").innerHTML = days{{block.id}} < 10 ? '0' + days{{block.id}} : days{{block.id}};
+                          document.getElementById("hours{{block.id}}").innerHTML = hours{{block.id}} < 10 ? '0' + hours{{block.id}} : hours{{block.id}};
+                          document.getElementById("minutes{{block.id}}").innerHTML = minutes{{block.id}} < 10 ? '0' + minutes{{block.id}} : minutes{{block.id}};
+                          document.getElementById("seconds{{block.id}}").innerHTML = seconds{{block.id}} < 10 ? '0' + seconds{{block.id}} : seconds{{block.id}};
+                          
+                        
+                          // If the count down is finished display Happy New Year text
+                          if (distance{{block.id}} < 0) {
+                            clearInterval(x{{block.id}});
+                            document.getElementById("days{{block.id}}").innerHTML = "00";
+                            document.getElementById("hours{{block.id}}").innerHTML = "00";
+                            document.getElementById("minutes{{block.id}}").innerHTML = "00";
+                            document.getElementById("seconds{{block.id}}").innerHTML = "00";
+                          }
+                        }, 1000);
+                        
+                        </script>
+                        <giveaway-coutdown class='w-50 m-auto'>
+                          <div class='cont'>
+                              <div class='counters'>
+                                <div class='counter'>
+                                  <span id='days{{block.id}}'>NA</span>
+                                  <p>Days</p>
+                                </div>
+                                
+                                <div class='counter'>
+                                  <span id='hours{{block.id}}'>NA</span>
+                                  <p>Hours</p>
+                                </div>
+                                
+                                <div class='counter'>
+                                  <span id='minutes{{block.id}}'>NA</span>
+                                  <p>Minutes</p>
+                                </div>
+                                
+                                <div class='counter'>
+                                  <span id='seconds{{block.id}}'>NA</span>
+                                  <p>Seconds</p>
+                                </div>
+                                
+                              </div>
+                        </div>
+                        </giveaway-coutdown>
+                {% else %}
+                    <div class='p-3 w-75 m-auto border border-secondary border-2 rounded-4 bg-dark'>
+                       <h3 class='p-3 fst-italic text-center' style='color:#959595;font-size: 2rem;'>GIVEAWAY ENDED </h3>
+                    </div>
+          {% endif %}
+       <h2 class='my-4 fst-italic text-center text-light'>{{ block.settings.giveaway_product_title }}</h2>
+       <a href='{{ block.settings.product_url }}' class='mb-5 color-red text-decoration-underline text-center d-block w-75 m-auto' style='font-size: 2rem;'>VIEW BIKE DETAILS</a>
+
+            
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+
+
+{% schema %}
+{
+  "name": "giveaway countdown",
+  "settings" : [
+    {
+        "type": "color_background",
+        "id": "section_bg_color",
+        "label": "choose the background color" ,
+        "default": "linear-gradient(#ffffff, #000000)"
+    },
+    {
+       "type": "text",
+        "id": "hint",
+        "label": "Enter a hint to be displayed at the top (optional)"    
+    },
+    {
+       "type": "text",
+        "id": "main_title",
+        "label": "Enter main title"    
+    },
+    {
+       "type": "richtext",
+        "id": "subtitle",
+        "label": "Enter subtitle"    
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Product giveaway",
+      "type": "giveaway",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "giveaway_image",
+          "label": "Enter the plan title"
+        },
+        {
+          "type": "checkbox",
+          "id": "active_countdown",
+          "label": "Check this box if you wish to activate the countdown for this product"
+        },
+        {
+          "type": "number",
+          "id": "count_down_year",
+          "label": "Enter year"
+        },
+        {
+          "type": "select",
+          "id": "count_down_month",
+          "label": "Enter month",
+          "options": [
+            {
+              "value": "Jan",
+              "label": "January"
+            },
+            {
+              "value": "Feb",
+              "label": "February "
+            },
+            {
+              "value": "Mar",
+              "label": "March "
+            },
+            {
+              "value": "Apr",
+              "label": "April "
+            },
+            {
+              "value": "May",
+              "label": "May"
+            },
+            {
+              "value": "Jun",
+              "label": "June "
+            },
+            {
+              "value": "Jul",
+              "label": "July"
+            },
+            {
+              "value": "Aug",
+              "label": "August "
+            },
+            {
+              "value": "Sep",
+              "label": "September "
+            },
+            {
+              "value": "Oct",
+              "label": "October "
+            },
+            {
+              "value": "Nov",
+              "label": "November "
+            },
+            {
+              "value": "Dec",
+              "label": "December  "
+            }
+          ],
+          "default": "Jan"
+        },
+        {
+          "type": "number",
+          "id": "count_down_days",
+          "label": "Enter the month's day"
+        },
+        {
+          "type": "number",
+          "id": "count_down_hour",
+          "label": "Enter  hour"
+        },
+        {
+          "type": "number",
+          "id": "count_down_mins",
+          "label": "Enter minutes"
+        },
+
+        {
+          "type": "text",
+          "id": "giveaway_product_title",
+          "label": "Enter the title of the product you want to give away"
+        },
+        {
+          "type": "url",
+          "id": "product_url",
+          "label": "Enter the product url"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "giveaway countdown",
+      "category": "pricing"
+    }
+  ]
+}
+{% endschema %}
